@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroForm Authentication</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #365f48;
+      --primary-dark: #264735;
+      --accent: #dce9d8;
+      --surface: #ffffff;
+      --muted: #6b7280;
+      --text: #1f2933;
+      --border: #d9e2dc;
+      --danger: #c0392b;
+      --success: #1f8f55;
+      --shadow: 0 22px 70px rgba(27, 57, 39, 0.18);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(242, 247, 241, 0.92), rgba(229, 239, 226, 0.92)),
+        url("https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1600&q=80") center/cover fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .auth-shell {
+      width: min(1040px, 100%);
+      max-width: 560px;
+      min-height: 0;
+      display: block;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-panel {
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .panel-top {
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      margin-bottom: 8px;
+    }
+
+    .panel-top h2 {
+      font-size: clamp(26px, 4vw, 36px);
+      line-height: 1.15;
+      margin-bottom: 10px;
+      letter-spacing: 0;
+    }
+
+    .panel-top p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 5px;
+      border-radius: 999px;
+      background: #eef4ef;
+      margin-bottom: 24px;
+    }
+
+    .tab-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 14px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: 0.22s ease;
+    }
+
+    .tab-button.active {
+      background: var(--surface);
+      color: var(--primary-dark);
+      box-shadow: 0 8px 22px rgba(54, 95, 72, 0.14);
+    }
+
+    .form-view {
+      display: none;
+    }
+
+    .form-view.active {
+      display: block;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+      color: #34453b;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      opacity: 0.72;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px 12px 42px;
+      font: inherit;
+      font-size: 15px;
+      background: #fbfdfb;
+      color: var(--text);
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(54, 95, 72, 0.12);
+    }
+
+    .primary-btn,
+    .ghost-btn {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 12px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.22s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+      margin-top: 8px;
+      box-shadow: 0 12px 24px rgba(54, 95, 72, 0.22);
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .ghost-btn {
+      background: #eef4ef;
+      color: var(--primary-dark);
+      margin-top: 10px;
+    }
+
+    .form-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: #fff0ed;
+      color: var(--danger);
+      border: 1px solid #f3c7bd;
+    }
+
+    .message.success {
+      background: #edf9f1;
+      color: var(--success);
+      border: 1px solid #bfe8cd;
+    }
+
+    .payment-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: #fbfdfb;
+      margin-bottom: 18px;
+    }
+
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e8eee9;
+      font-size: 14px;
+    }
+
+    .payment-row:last-child {
+      border-bottom: 0;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--primary-dark);
+    }
+
+    .secure-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 820px) {
+      body {
+        padding: 12px;
+        align-items: stretch;
+      }
+
+      .auth-panel {
+        padding: 26px 20px 28px;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="auth-panel">
+      <div class="panel-top">
+        <div class="eyebrow">Farmer Access</div>
+        <h2 id="panelTitle">Welcome back</h2>
+        <p id="panelDescription"></p>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <button class="tab-button active" type="button" data-view="login">Login</button>
+        <button class="tab-button" type="button" data-view="signup">Create account</button>
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <form id="loginView" class="form-view active">
+        <div class="field">
+          <label for="loginPhone">Phone number</label>
+          <div class="input-wrap">
+            <i class="fas fa-phone"></i>
+            <input id="loginPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digit mobile number" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="loginPin">PIN</label>
+          <div class="input-wrap">
+            <i class="fas fa-key"></i>
+            <input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="4 to 6 digit PIN" required>
+          </div>
+        </div>
+        <button class="primary-btn" type="submit" id="loginButton"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </form>
+
+      <form id="signupView" class="form-view">
+        <div class="field-grid">
+          <div class="field">
+            <label for="firstName">Name</label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input id="firstName" type="text" autocomplete="given-name" placeholder="First name" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="lastName">Surname</label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input id="lastName" type="text" autocomplete="family-name" placeholder="Surname" required>
+            </div>
+          </div>
+          <div class="field full">
+            <label for="signupPhone">Phone number</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone"></i>
+              <input id="signupPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digit mobile number" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="signupPin">Create PIN</label>
+            <div class="input-wrap">
+              <i class="fas fa-key"></i>
+              <input id="signupPin" type="password" inputmode="numeric" autocomplete="new-password" placeholder="4 to 6 digits" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="confirmPin">Confirm PIN</label>
+            <div class="input-wrap">
+              <i class="fas fa-check"></i>
+              <input id="confirmPin" type="password" inputmode="numeric" autocomplete="new-password" placeholder="Repeat PIN" required>
+            </div>
+          </div>
+          <div class="field full">
+            <label for="village">Village or farm name</label>
+            <div class="input-wrap">
+              <i class="fas fa-map-marker-alt"></i>
+              <input id="village" type="text" autocomplete="address-level3" placeholder="Optional but useful">
+            </div>
+          </div>
+        </div>
+        <button class="primary-btn" type="submit" id="createButton"><i class="fas fa-user-plus"></i> Create account</button>
+      </form>
+
+      <section id="paymentView" class="form-view">
+        <div class="payment-card">
+          <div class="payment-row"><span>Plan</span><strong>AgroForm yearly access</strong></div>
+          <div class="payment-row"><span>Duration</span><strong>1 year</strong></div>
+          <div class="payment-row"><span>Payment mode</span><strong>Demo payment</strong></div>
+          <div class="payment-row"><span>Total today</span><strong>Rs. 0</strong></div>
+        </div>
+        <button class="primary-btn" type="button" id="paymentButton"><i class="fas fa-shield-alt"></i> Complete demo payment</button>
+        <button class="ghost-btn" type="button" id="backToSignup"><i class="fas fa-arrow-left"></i> Edit account details</button>
+        <div class="secure-line"><i class="fas fa-lock"></i><span>This is only a demo step. You can connect a real payment gateway later.</span></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvGRPEIhwZ3-k9YNL597xsNXayTMW6YrE",
+      authDomain: "grapes-7477e.firebaseapp.com",
+      projectId: "grapes-7477e",
+      storageBucket: "grapes-7477e.firebasestorage.app",
+      messagingSenderId: "995160881797",
+      appId: "1:995160881797:web:89fb268a4601129c8d87ec"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const yearlyAccessMs = 365 * 24 * 60 * 60 * 1000;
+    const allowedReturns = new Set(["index.html", "drip.html"]);
+    const params = new URLSearchParams(window.location.search);
+    const returnPage = allowedReturns.has(params.get("return")) ? params.get("return") : "index.html";
+    let pendingAccount = null;
+
+    const views = {
+      login: document.getElementById("loginView"),
+      signup: document.getElementById("signupView"),
+      payment: document.getElementById("paymentView")
+    };
+
+    const panelTitle = document.getElementById("panelTitle");
+    const panelDescription = document.getElementById("panelDescription");
+    const message = document.getElementById("message");
+    const tabs = document.getElementById("tabs");
+
+    function normalizePhone(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      return digits.length > 10 ? digits.slice(-10) : digits;
+    }
+
+    function validPin(value) {
+      return /^\d{4,6}$/.test(String(value || ""));
+    }
+
+    function showMessage(text, type = "error") {
+      message.textContent = text;
+      message.className = `message ${type} show`;
+    }
+
+    function clearMessage() {
+      message.textContent = "";
+      message.className = "message";
+    }
+
+    function setLoading(button, loading, text) {
+      button.disabled = loading;
+      button.innerHTML = loading ? '<i class="fas fa-circle-notch fa-spin"></i> Please wait...' : text;
+    }
+
+    function setView(view) {
+      clearMessage();
+      Object.values(views).forEach(element => element.classList.remove("active"));
+      views[view].classList.add("active");
+      document.querySelectorAll(".tab-button").forEach(button => {
+        button.classList.toggle("active", button.dataset.view === view);
+      });
+      tabs.style.display = view === "payment" ? "none" : "grid";
+      if (view === "login") {
+        panelTitle.textContent = "Welcome back";
+        panelDescription.textContent = "";
+      }
+      if (view === "signup") {
+        panelTitle.textContent = "Create farmer account";
+        panelDescription.textContent = "";
+      }
+      if (view === "payment") {
+        panelTitle.textContent = "Demo subscription";
+        panelDescription.textContent = "Complete the Rs. 0 yearly demo payment to activate this account.";
+      }
+    }
+
+    function createSession(account) {
+      const now = Date.now();
+      const subscriptionValidUntil = account.subscriptionValidUntil || now + yearlyAccessMs;
+      sessionStorage.setItem("agriUser", JSON.stringify({
+        username: account.username,
+        phone: account.phone || account.username,
+        displayName: account.displayName || account.username,
+        loginTime: now,
+        subscriptionValidUntil
+      }));
+    }
+
+    function redirectToReturnPage() {
+      window.location.href = returnPage;
+    }
+
+    function getExistingSession() {
+      try {
+        const user = JSON.parse(sessionStorage.getItem("agriUser") || "null");
+        if (user && user.username && Date.now() < (user.subscriptionValidUntil || 0)) {
+          return user;
+        }
+      } catch (error) {
+        sessionStorage.removeItem("agriUser");
+      }
+      return null;
+    }
+
+    async function findAccount(phone, pin) {
+      const byPhone = await db.collection("usernames")
+        .where("phone", "==", phone)
+        .where("password", "==", pin)
+        .limit(1)
+        .get();
+      if (!byPhone.empty) return byPhone.docs[0].data();
+
+      const byUsername = await db.collection("usernames")
+        .where("username", "==", phone)
+        .where("password", "==", pin)
+        .limit(1)
+        .get();
+      return byUsername.empty ? null : byUsername.docs[0].data();
+    }
+
+    async function phoneAlreadyExists(phone) {
+      const byPhone = await db.collection("usernames").where("phone", "==", phone).limit(1).get();
+      if (!byPhone.empty) return true;
+      const byUsername = await db.collection("usernames").where("username", "==", phone).limit(1).get();
+      return !byUsername.empty;
+    }
+
+    document.querySelectorAll(".tab-button").forEach(button => {
+      button.addEventListener("click", () => setView(button.dataset.view));
+    });
+
+    document.getElementById("loginView").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessage();
+      const phone = normalizePhone(document.getElementById("loginPhone").value);
+      const pin = document.getElementById("loginPin").value.trim();
+      const button = document.getElementById("loginButton");
+
+      if (phone.length !== 10) {
+        showMessage("Please enter a valid 10 digit phone number.");
+        return;
+      }
+      if (!validPin(pin)) {
+        showMessage("Please enter your 4 to 6 digit PIN.");
+        return;
+      }
+
+      try {
+        setLoading(button, true);
+        const account = await findAccount(phone, pin);
+        if (!account) {
+          showMessage("Phone number or PIN is incorrect.");
+          return;
+        }
+        createSession({
+          username: account.username || phone,
+          phone: account.phone || phone,
+          displayName: account.displayName || `${account.firstName || ""} ${account.lastName || ""}`.trim() || phone,
+          subscriptionValidUntil: account.subscriptionValidUntil || Date.now() + yearlyAccessMs
+        });
+        redirectToReturnPage();
+      } catch (error) {
+        showMessage(`Login failed: ${error.message}`);
+      } finally {
+        setLoading(button, false, '<i class="fas fa-sign-in-alt"></i> Login');
+      }
+    });
+
+    document.getElementById("signupView").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessage();
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const phone = normalizePhone(document.getElementById("signupPhone").value);
+      const pin = document.getElementById("signupPin").value.trim();
+      const confirmPin = document.getElementById("confirmPin").value.trim();
+      const village = document.getElementById("village").value.trim();
+      const button = document.getElementById("createButton");
+
+      if (!firstName || !lastName) {
+        showMessage("Name and surname are required.");
+        return;
+      }
+      if (phone.length !== 10) {
+        showMessage("Phone number is required and must be 10 digits.");
+        return;
+      }
+      if (!validPin(pin)) {
+        showMessage("Create a simple 4 to 6 digit PIN.");
+        return;
+      }
+      if (pin !== confirmPin) {
+        showMessage("PIN and confirm PIN do not match.");
+        return;
+      }
+
+      try {
+        setLoading(button, true);
+        if (await phoneAlreadyExists(phone)) {
+          setView("login");
+          showMessage("This phone number already has an account. Please login.");
+          document.getElementById("loginPhone").value = phone;
+          return;
+        }
+        pendingAccount = {
+          username: phone,
+          phone,
+          password: pin,
+          firstName,
+          lastName,
+          displayName: `${firstName} ${lastName}`,
+          village,
+          subscriptionPlan: "yearly-demo",
+          subscriptionAmount: 0,
+          subscriptionStatus: "pending"
+        };
+        setView("payment");
+      } catch (error) {
+        showMessage(`Could not prepare account: ${error.message}`);
+      } finally {
+        setLoading(button, false, '<i class="fas fa-user-plus"></i> Create account');
+      }
+    });
+
+    document.getElementById("paymentButton").addEventListener("click", async () => {
+      if (!pendingAccount) {
+        setView("signup");
+        showMessage("Please create account details first.");
+        return;
+      }
+      const button = document.getElementById("paymentButton");
+      const now = Date.now();
+      const subscriptionValidUntil = now + yearlyAccessMs;
+      const account = {
+        ...pendingAccount,
+        subscriptionStatus: "active",
+        subscriptionValidUntil,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        setLoading(button, true);
+        await db.collection("usernames").doc(account.phone).set(account, { merge: true });
+        await db.collection("users").doc(account.username).set({
+          phone: account.phone,
+          firstName: account.firstName,
+          lastName: account.lastName,
+          displayName: account.displayName,
+          village: account.village,
+          subscriptionStatus: account.subscriptionStatus,
+          subscriptionValidUntil,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        createSession(account);
+        redirectToReturnPage();
+      } catch (error) {
+        showMessage(`Demo payment failed: ${error.message}`);
+      } finally {
+        setLoading(button, false, '<i class="fas fa-shield-alt"></i> Complete demo payment');
+      }
+    });
+
+    document.getElementById("backToSignup").addEventListener("click", () => setView("signup"));
+
+    if (getExistingSession()) {
+      redirectToReturnPage();
+    }
+  </script>
+</body>
+</html>

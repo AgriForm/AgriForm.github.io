@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4a6b57;
+      --secondary: #f8f9fa;
+      --accent: #8ba888;
+      --text: #333;
+      --light: #fff;
+      --danger: #e74c3c;
+      --warning: #f39c12;
+      --success: #2ecc71;
+      --info: #3498db;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .container {
+      width: 100%;
+      padding: 15px;
+      margin: 0 auto;
+    }
+    /* Login Section */
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      padding: 20px;
+    }
+    .login-card {
+      background: var(--light);
+      padding: 25px 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-card h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-group i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      opacity: 0.7;
+      font-size: 16px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid #e0e0e0;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      transition: var(--transition);
+      background-color: #f8f9fa;
+    }
+    .login-card input:focus {
+      border-color: var(--primary);
+      outline: none;
+      background-color: var(--light);
+      box-shadow: 0 0 0 2px rgba(74, 107, 87, 0.2);
+    }
+    .login-card button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: var(--light);
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 5px;
+    }
+    .login-card button:hover {
+      background-color: #3a5747;
+    }
+    /* Data Entry Section */
+    #data-entry-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .header h2 {
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card {
+      background: var(--light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 20px 15px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .card-title i {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .form-group {
+      width: 100%;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #555;
+      font-size: 14px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: var(--border-radius);
+      font-size: 15px;
+      transition: var(--transition);
+      background-color: #f8f9fa;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      outline: none;
+      background-color: var(--light);
+      box-shadow: 0 0 0 2px rgba(74, 107, 87, 0.2);
+    }
+    .input-with-unit {
+      display: flex;
+      align-items: center;
+    }
+    .input-with-unit input {
+      flex: 1;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .input-with-unit select {
+      width: 80px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: none;
+    }
+    .input-with-unit span {
+      padding: 0 12px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border: 1px solid #e0e0e0;
+      border-left: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      font-size: 14px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+    }
+    .btn i {
+      margin-right: 6px;
+      font-size: 14px;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+    .btn-primary:hover {
+      background-color: #3a5747;
+    }
+    .btn-success {
+      background-color: var(--success);
+      color: var(--light);
+    }
+    .btn-success:hover {
+      background-color: #27ae60;
+    }
+    .btn-danger {
+      background-color: var(--danger);
+      color: var(--light);
+    }
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+    .btn-warning {
+      background-color: var(--warning);
+      color: var(--light);
+    }
+    .btn-warning:hover {
+      background-color: #e67e22;
+    }
+    .btn-info {
+      background-color: var(--info);
+      color: var(--light);
+    }
+    .btn-info:hover {
+      background-color: #2980b9;
+    }
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 13px;
+      min-height: 36px;
+    }
+
+    /* ✅ Unified Actions — Matches drip.html on ALL devices */
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .actions .btn {
+      padding: 12px 20px;
+      font-size: 14px;
+      white-space: nowrap;
+      min-width: auto;
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      background: var(--light);
+      margin-bottom: 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    th, td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 13px;
+    }
+    th {
+      background-color: var(--primary);
+      color: var(--light);
+      font-weight: 500;
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 6px;
+    }
+    /* Medicine/Fertilizer Section */
+    .medicine-container {
+      margin-top: 15px;
+    }
+    .medicine-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      position: relative;
+    }
+    .medicine-row .form-group {
+      margin-bottom: 0;
+    }
+    .medicine-row .unit-select {
+      width: 100%;
+    }
+    .remove-medicine-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 5px;
+      min-height: auto;
+    }
+    /* Animations */
+    @keyframes slideIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-in {
+      animation: slideIn 0.4s ease forwards;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3a5747;
+    }
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Language Toggle Button */
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .language-toggle i {
+      font-size: 16px;
+    }
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      body {
+        font-size: 15px;
+      }
+      .container {
+        max-width: 1200px;
+        padding: 20px;
+      }
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .form-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .form-group {
+        flex: 1 1 calc(50% - 10px);
+      }
+      .login-card {
+        padding: 30px 25px;
+      }
+      .card {
+        padding: 25px 20px;
+      }
+      th, td {
+        padding: 12px 10px;
+        font-size: 14px;
+      }
+      .btn {
+        padding: 12px 20px;
+      }
+      .medicine-row {
+        flex-direction: row;
+        align-items: flex-end;
+      }
+      .medicine-row .form-group {
+        flex: 1;
+      }
+      .remove-medicine-btn {
+        position: static;
+        margin-left: 10px;
+      }
+      #data-entry-section {
+        padding-bottom: 0;
+      }
+    }
+    @media (min-width: 992px) {
+      .form-group {
+        flex: 1 1 calc(33.333% - 15px);
+      }
+    }
+    /* 🚫 Removed the old mobile vertical button stack */
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button -->
+  <button id="languageToggle" class="language-toggle" onclick="toggleLanguage()">
+    <i class="fas fa-language"></i>
+    <span id="languageText">English</span>
+  </button>
+  <!-- Data Entry Form Section -->
+  <div id="data-entry-section" style="display: none;">
+    <div class="container">
+      <div class="header">
+        <h2><i class="fas fa-wine-bottle"></i> <span data-key="pageTitle">Agriculture Form</span></h2>
+        <div class="user-info">
+          <span id="current-user-display"></span>
+          <button onclick="logout()" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i> <span data-key="logoutButton">Logout</span></button>
+        </div>
+      </div>
+      <!-- Input Section -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-plus-circle"></i> <span data-key="addPlotTitle">Add New Plot</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <input type="text" id="newPlotName" class="form-control" placeholder="New Plot Name">
+          </div>
+          <div class="form-group">
+            <button onclick="addPlot()" class="btn btn-primary"><i class="fas fa-plus"></i> <span data-key="addPlotButton">Add Plot</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fas fa-edit"></i> <span data-key="dataEntryTitle">Data Entry</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="plotSelection" data-key="plotSelectionLabel">Select Plot</label>
+            <select id="plotSelection" class="form-control" required>
+              <option value="" disabled selected><span data-key="selectPlotPlaceholder">Select Plot</span></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="date" data-key="dateLabel">Date</label>
+            <input type="date" id="date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="pruningDate" data-key="pruningDateLabel">Pruning Date</label>
+            <input type="date" id="pruningDate" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="medicineName" data-key="medicineNameLabel">Medicine and Fertilizer Name</label>
+            <input type="text" id="medicineName" class="form-control" placeholder="Medicine and Fertilizer Name" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dosePerLiter" data-key="dosePerLiterLabel">Dose per Liter</label>
+            <div class="input-with-unit">
+              <input type="number" id="dosePerLiter" class="form-control" placeholder="Dose" required>
+              <select id="doseUnit" class="form-control" required>
+                <option value="ml">ml</option>
+                <option value="g">g</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dosePerPlot" data-key="dosePerPlotLabel">Dose per Plot</label>
+            <div class="input-with-unit">
+              <input type="number" id="dosePerPlot" class="form-control" placeholder="Dose" required>
+              <select id="dosePlotUnit" class="form-control" required>
+                <option value="ml">ml</option>
+                <option value="l">L</option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="waterPerPlot" data-key="waterPerPlotLabel">Water per Plot</label>
+            <div class="input-with-unit">
+              <input type="number" id="waterPerPlot" class="form-control" placeholder="Water (L)" required>
+              <span>L</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sprayTime" data-key="sprayTimeLabel">Spraying Time</label>
+            <input type="time" id="sprayTime" class="form-control" required>
+          </div>
+        </div>
+        <div class="actions">
+          <button onclick="addRowFromInputs()" class="btn btn-success"><i class="fas fa-save"></i> <span data-key="addDataButton">Add Data</span></button>
+        </div>
+      </div>
+      <!-- Filter Section -->
+      <div class="card">
+        <div class="card-title"><i class="fas fa-filter"></i> <span data-key="filterTitle">Filter</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="filterPlot" data-key="filterPlotLabel">Plot</label>
+            <select id="filterPlot" class="form-control" onchange="filterTable()">
+              <option value=""><span data-key="allPlotsOption">All Plots</span></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filterDate" data-key="filterDateLabel">Date</label>
+            <input type="date" id="filterDate" class="form-control" onchange="filterTable()">
+          </div>
+          <div class="form-group">
+            <label for="filterYear" data-key="filterYearLabel">Year</label>
+            <input type="number" id="filterYear" class="form-control" placeholder="Year" onchange="filterTable()">
+          </div>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th><span data-key="plotColumn">Plot</span></th>
+                <th><span data-key="dateColumn">Date</span></th>
+                <th><span data-key="pruningDateColumn">Pruning Date</span></th>
+                <th><span data-key="daysAfterPruningColumn">Days After Pruning</span></th>
+                <th><span data-key="medicineNameColumn">Medicine and Fertilizer</span></th>
+                <th><span data-key="dosePerLiterColumn">Dose per Liter</span></th>
+                <th><span data-key="dosePerPlotColumn">Dose per Plot</span></th>
+                <th><span data-key="waterPerPlotColumn">Water per Plot</span></th>
+                <th><span data-key="sprayingTimeColumn">Spraying Time</span></th>
+                <th><span data-key="actionsColumn">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- ✅ Unified Bottom Action Buttons (No mobile nav) -->
+      <div class="actions">
+        <button onclick="downloadPDF()" class="btn btn-info"><i class="fas fa-file-pdf"></i> <span data-key="downloadPDFButton">Download PDF</span></button>
+        <button onclick="redirectToSecondPage()" class="btn btn-primary"><i class="fas fa-tint"></i> <span data-key="irrigationButton">Irrigation</span></button>
+      </div>
+    </div>
+    <!-- 🚫 Mobile navigation REMOVED -->
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.22/jspdf.plugin.autotable.min.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    const translations = {
+      "en": {
+        "loginTitle": "Login",
+        "loginButton": "Login",
+        "pageTitle": "Agriculture Form",
+        "logoutButton": "Logout",
+        "addPlotTitle": "Add New Plot",
+        "addPlotButton": "Add Plot",
+        "dataEntryTitle": "Data Entry",
+        "plotSelectionLabel": "Select Plot",
+        "selectPlotPlaceholder": "Select Plot",
+        "dateLabel": "Date",
+        "pruningDateLabel": "Pruning Date",
+        "medicineNameLabel": "Medicine and Fertilizer Name",
+        "dosePerLiterLabel": "Dose per Liter",
+        "dosePerPlotLabel": "Dose per Plot",
+        "waterPerPlotLabel": "Water per Plot",
+        "sprayTimeLabel": "Spraying Time",
+        "addDataButton": "Add Data",
+        "filterTitle": "Filter",
+        "filterPlotLabel": "Plot",
+        "allPlotsOption": "All Plots",
+        "filterDateLabel": "Date",
+        "filterYearLabel": "Year",
+        "plotColumn": "Plot",
+        "dateColumn": "Date",
+        "pruningDateColumn": "Pruning Date",
+        "daysAfterPruningColumn": "Days After Pruning",
+        "medicineNameColumn": "Medicine and Fertilizer",
+        "dosePerLiterColumn": "Dose per Liter",
+        "dosePerPlotColumn": "Dose per Plot",
+        "waterPerPlotColumn": "Water per Plot",
+        "sprayingTimeColumn": "Spraying Time",
+        "actionsColumn": "Actions",
+        "downloadPDFButton": "Download PDF",
+        "irrigationButton": "Irrigation",
+        "confirmDelete": "Do you want to delete this row?",
+        "invalidCredentials": "Invalid username or password",
+        "plotAddedSuccess": "Plot added successfully.",
+        "enterValidPlotName": "Please enter a valid plot name.",
+        "fillAllFields": "Please fill all required fields.",
+        "errorAddingPlot": "Error adding plot:",
+        "errorSavingData": "Error saving data:",
+        "errorLoadingPlots": "Error loading plots:",
+        "errorLoadingData": "Error loading data:"
+      },
+      "mr": {
+        "loginTitle": "लॉगिन",
+        "loginButton": "लॉगिन",
+        "pageTitle": "कृषी फॉर्म",
+        "logoutButton": "लॉगआउट",
+        "addPlotTitle": "नवीन प्लॉट जोडा",
+        "addPlotButton": "प्लॉट जोडा",
+        "dataEntryTitle": "डेटा एंट्री",
+        "plotSelectionLabel": "प्लॉट निवडा",
+        "selectPlotPlaceholder": "प्लॉट निवडा",
+        "dateLabel": "तारीख",
+        "pruningDateLabel": "छाटणी ची तारीख",
+        "medicineNameLabel": "औषधे आणि खतांचे नाव",
+        "dosePerLiterLabel": "प्रति लिटर डोस",
+        "dosePerPlotLabel": "प्रति प्लॉट डोस",
+        "waterPerPlotLabel": "प्रति प्लॉट पाणी",
+        "sprayTimeLabel": "स्प्रे करण्याचा वेळ",
+        "addDataButton": "डेटा जोडा",
+        "filterTitle": "फिल्टर",
+        "filterPlotLabel": "प्लॉट",
+        "allPlotsOption": "सर्व प्लॉट",
+        "filterDateLabel": "तारीख",
+        "filterYearLabel": "वर्ष",
+        "plotColumn": "प्लॉट",
+        "dateColumn": "तारीख",
+        "pruningDateColumn": "छाटणी ची तारीख",
+        "daysAfterPruningColumn": "छाटणीनंतरचे दिवस",
+        "medicineNameColumn": "औषधे आणि खतांचे नाव",
+        "dosePerLiterColumn": "प्रति लिटर डोस",
+        "dosePerPlotColumn": "प्रति प्लॉट डोस",
+        "waterPerPlotColumn": "प्रति प्लॉट पाणी",
+        "sprayingTimeColumn": "स्प्रे करण्याचा वेळ",
+        "actionsColumn": "कारवाया",
+        "downloadPDFButton": "PDF डाउनलोड",
+        "irrigationButton": "इरिगेशन",
+        "confirmDelete": "तुम्हाला ही पंक्ती हटवायची आहे का?",
+        "invalidCredentials": "अवैध वापरकर्तानाव किंवा पासवर्ड",
+        "plotAddedSuccess": "प्लॉट यशस्वीरित्या जोडला.",
+        "enterValidPlotName": "कृपया वैध प्लॉट नाव द्या.",
+        "fillAllFields": "कृपया सर्व आवश्यक फील्ड भरा.",
+        "errorAddingPlot": "प्लॉट जोडताना त्रुटी:",
+        "errorSavingData": "डेटा सेव्ह करताना त्रुटी:",
+        "errorLoadingPlots": "प्लॉट लोड करताना त्रुटी:",
+        "errorLoadingData": "डेटा लोड करताना त्रुटी:"
+      }
+    };
+    let currentLanguage = 'mr';
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      document.documentElement.lang = lang === 'mr' ? 'mr' : 'en';
+      document.querySelectorAll('[data-key]').forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          if (element.tagName === 'SELECT' && element.querySelector('option')) {
+            element.querySelectorAll('option').forEach(option => {
+              if (option.textContent.trim()) {
+                option.textContent = translations[lang][key] || option.textContent;
+              }
+            });
+          } else {
+            element.textContent = translations[lang][key] || element.textContent;
+          }
+        }
+      });
+      const languageText = document.getElementById('languageText');
+      languageText.textContent = lang === 'mr' ? 'English' : 'मराठी';
+      setPlaceholder('newPlotName', lang === 'mr' ? 'नवीन प्लॉट नाव' : 'New Plot Name');
+      setPlaceholder('medicineName', lang === 'mr' ? 'औषधे आणि खतांचे नाव' : 'Medicine and Fertilizer Name');
+      setPlaceholder('dosePerLiter', lang === 'mr' ? 'डोस' : 'Dose');
+      setPlaceholder('dosePerPlot', lang === 'mr' ? 'डोस' : 'Dose');
+      setPlaceholder('waterPerPlot', lang === 'mr' ? 'पाणी (लिटर)' : 'Water (L)');
+      setPlaceholder('filterYear', lang === 'mr' ? 'वर्ष' : 'Year');
+    }
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'mr' ? 'en' : 'mr';
+      setLanguage(currentLanguage);
+    }
+    function setPlaceholder(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.placeholder = value;
+    }
+
+    setLanguage('mr');
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvGRPEIhwZ3-k9YNL597xsNXayTMW6YrE",
+      authDomain: "grapes-7477e.firebaseapp.com",
+      projectId: "grapes-7477e",
+      storageBucket: "grapes-7477e.firebasestorage.app",
+      messagingSenderId: "995160881797",
+      appId: "1:995160881797:web:89fb268a4601129c8d87ec"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    let currentUser = "";
+    let editingRow = null;
+    let tableData = [];
+    function getAuthenticatedUser() {
+      const storedUser = sessionStorage.getItem('agriUser');
+      if (!storedUser) return null;
+      try {
+        const user = JSON.parse(storedUser);
+        const expiry = user.subscriptionValidUntil || user.expiresAt || 0;
+        if (!user.username || Date.now() > expiry) {
+          sessionStorage.removeItem('agriUser');
+          return null;
+        }
+        return user;
+      } catch (error) {
+        sessionStorage.removeItem('agriUser');
+        return null;
+      }
+    }
+
+    function requireAuthenticatedUser() {
+      const user = getAuthenticatedUser();
+      if (!user) {
+        const returnUrl = encodeURIComponent(window.location.pathname.split('/').pop() || 'index.html');
+        window.location.href = `authentication.html?return=${returnUrl}`;
+        return false;
+      }
+      currentUser = user.username;
+      document.getElementById("data-entry-section").style.display = "block";
+      document.getElementById("current-user-display").textContent = `User: ${user.displayName || currentUser}`;
+      loadPlots();
+      loadData();
+      return true;
+    }
+
+    function logout() {
+      currentUser = "";
+      editingRow = null;
+      sessionStorage.removeItem('agriUser');
+      const returnPage = window.location.pathname.split('/').pop() || 'index.html';
+      window.location.href = `authentication.html?return=${encodeURIComponent(returnPage)}`;
+    }
+
+    function loadPlots() {
+      if (!currentUser) return;
+      db.collection("users").doc(currentUser).collection("plots")
+        .orderBy("createdAt", "asc")
+        .get()
+        .then((querySnapshot) => {
+          const plotSelection = document.getElementById("plotSelection");
+          const filterPlot = document.getElementById("filterPlot");
+          plotSelection.innerHTML = '<option value="" disabled selected><span data-key="selectPlotPlaceholder">Select Plot</span></option>';
+          filterPlot.innerHTML = '<option value=""><span data-key="allPlotsOption">All Plots</span></option>';
+          querySnapshot.forEach((doc) => {
+            const plot = doc.data().name;
+            const option = document.createElement("option");
+            option.value = plot;
+            option.textContent = plot;
+            plotSelection.appendChild(option);
+            filterPlot.appendChild(option.cloneNode(true));
+          });
+          setLanguage(currentLanguage);
+        })
+        .catch((error) => {
+          console.error(translations[currentLanguage]["errorLoadingPlots"], error);
+        });
+    }
+    function addPlot() {
+      if (!currentUser) return;
+      const newPlotName = document.getElementById("newPlotName").value.trim();
+      if (!newPlotName) {
+        alert(translations[currentLanguage]["enterValidPlotName"]);
+        return;
+      }
+      db.collection("users").doc(currentUser).collection("plots").add({
+        name: newPlotName,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        loadPlots();
+        alert(translations[currentLanguage]["plotAddedSuccess"]);
+        document.getElementById("newPlotName").value = "";
+      })
+      .catch((error) => {
+        alert(translations[currentLanguage]["errorAddingPlot"] + " " + error.message);
+      });
+    }
+    function addRowFromInputs() {
+      if (!currentUser) return;
+      const date = document.getElementById("date").value;
+      const pruningDate = document.getElementById("pruningDate").value;
+      const medicineName = document.getElementById("medicineName").value;
+      const dosePerLiter = document.getElementById("dosePerLiter").value;
+      const doseUnit = document.getElementById("doseUnit").value;
+      const dosePerPlot = document.getElementById("dosePerPlot").value;
+      const dosePlotUnit = document.getElementById("dosePlotUnit").value;
+      const waterPerPlot = document.getElementById("waterPerPlot").value;
+      const sprayTime = document.getElementById("sprayTime").value;
+      const plotSelection = document.getElementById("plotSelection").value;
+      if (!date || !pruningDate || !medicineName || !plotSelection || !dosePerLiter || !doseUnit || !dosePerPlot || !dosePlotUnit) {
+        alert(translations[currentLanguage]["fillAllFields"]);
+        return;
+      }
+      const daysAfterPruning = calculateDaysAfterPruning(date, pruningDate);
+      db.collection("users").doc(currentUser).collection("sprayData").add({
+        plot: plotSelection,
+        date: date,
+        pruningDate: pruningDate,
+        daysAfterPruning: daysAfterPruning,
+        medicineName: medicineName,
+        dosePerLiter: dosePerLiter + " " + doseUnit,
+        dosePerPlot: dosePerPlot + " " + dosePlotUnit,
+        waterPerPlot: waterPerPlot + " L",
+        sprayTime: sprayTime,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        document.getElementById("date").value = "";
+        document.getElementById("pruningDate").value = "";
+        document.getElementById("medicineName").value = "";
+        document.getElementById("dosePerLiter").value = "";
+        document.getElementById("dosePerPlot").value = "";
+        document.getElementById("waterPerPlot").value = "";
+        document.getElementById("sprayTime").value = "";
+        document.getElementById("plotSelection").selectedIndex = 0;
+        loadData();
+      })
+      .catch((error) => {
+        alert(translations[currentLanguage]["errorSavingData"] + " " + error.message);
+      });
+    }
+    function calculateDaysAfterPruning(date, pruningDate) {
+      const dateObj = new Date(date);
+      const pruningDateObj = new Date(pruningDate);
+      const differenceInTime = dateObj.getTime() - pruningDateObj.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+      return Math.floor(differenceInDays);
+    }
+    function loadData() {
+      if (!currentUser) return;
+      db.collection("users").doc(currentUser).collection("sprayData")
+        .orderBy("createdAt", "desc")
+        .get()
+        .then((querySnapshot) => {
+          const tableBody = document.getElementById("table-body");
+          tableBody.innerHTML = "";
+          tableData = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            tableData.push({id: doc.id, ...data});
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+              <td>${data.plot}</td>
+              <td>${data.date}</td>
+              <td>${data.pruningDate}</td>
+              <td>${data.daysAfterPruning}</td>
+              <td>${data.medicineName}</td>
+              <td>${data.dosePerLiter}</td>
+              <td>${data.dosePerPlot}</td>
+              <td>${data.waterPerPlot}</td>
+              <td>${data.sprayTime}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn btn-warning btn-sm" onclick="editRow('${doc.id}')"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRow('${doc.id}')"><i class="fas fa-trash"></i></button>
+                </div>
+              </td>
+            `;
+            tableBody.appendChild(newRow);
+          });
+        })
+        .catch((error) => {
+          console.error(translations[currentLanguage]["errorLoadingData"], error);
+        });
+    }
+    function editRow(docId) {
+      const data = tableData.find(item => item.id === docId);
+      if (!data) return;
+      document.getElementById("plotSelection").value = data.plot;
+      document.getElementById("date").value = data.date;
+      document.getElementById("pruningDate").value = data.pruningDate;
+      document.getElementById("medicineName").value = data.medicineName;
+      const dosePerLiterParts = data.dosePerLiter.split(' ');
+      document.getElementById("dosePerLiter").value = dosePerLiterParts[0];
+      document.getElementById("doseUnit").value = dosePerLiterParts[1];
+      const dosePerPlotParts = data.dosePerPlot.split(' ');
+      document.getElementById("dosePerPlot").value = dosePerPlotParts[0];
+      document.getElementById("dosePlotUnit").value = dosePerPlotParts[1];
+      document.getElementById("waterPerPlot").value = data.waterPerPlot.replace(" L", "");
+      document.getElementById("sprayTime").value = data.sprayTime;
+      editingRow = docId;
+      db.collection("users").doc(currentUser).collection("sprayData").doc(docId).delete()
+        .then(() => {
+          loadData();
+        })
+        .catch((error) => {
+          alert("Error preparing for edit: " + error.message);
+        });
+    }
+    function deleteRow(docId) {
+      if (confirm(translations[currentLanguage]["confirmDelete"])) {
+        db.collection("users").doc(currentUser).collection("sprayData").doc(docId).delete()
+          .then(() => {
+            loadData();
+          })
+          .catch((error) => {
+            alert("Error deleting data: " + error.message);
+          });
+      }
+    }
+    function filterTable() {
+      const filterPlot = document.getElementById("filterPlot").value.toLowerCase();
+      const filterDate = document.getElementById("filterDate").value;
+      const filterYear = document.getElementById("filterYear").value;
+      const rows = document.querySelectorAll("#table-body tr");
+      rows.forEach(row => {
+        const cells = row.children;
+        const plot = cells[0].textContent.toLowerCase();
+        const date = cells[1].textContent;
+        const year = new Date(date).getFullYear();
+        const matchPlot = filterPlot ? plot.includes(filterPlot) : true;
+        const matchDate = filterDate ? date.includes(filterDate) : true;
+        const matchYear = filterYear ? year.toString().includes(filterYear) : true;
+        if (matchPlot && matchDate && matchYear) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const tableHeaders = [
+        [translations[currentLanguage]["plotColumn"], 
+         translations[currentLanguage]["dateColumn"], 
+         translations[currentLanguage]["pruningDateColumn"], 
+         translations[currentLanguage]["daysAfterPruningColumn"], 
+         translations[currentLanguage]["medicineNameColumn"],
+         translations[currentLanguage]["dosePerLiterColumn"], 
+         translations[currentLanguage]["dosePerPlotColumn"], 
+         translations[currentLanguage]["waterPerPlotColumn"], 
+         translations[currentLanguage]["sprayingTimeColumn"]]
+      ];
+      const tableData = Array.from(document.querySelectorAll("#table-body tr")).filter(row => row.style.display !== "none").map(row => {
+        return Array.from(row.children).slice(0, -1).map(cell => cell.textContent);
+      });
+      doc.autoTable({
+        head: tableHeaders,
+        body: tableData,
+        theme: 'grid',
+        margin: { top: 10 },
+        styles: { fontSize: 12, cellPadding: 2, font: "helvetica" }
+      });
+      doc.save("table_data.pdf");
+    }
+    function redirectToSecondPage() {
+      window.location.href = 'drip.html';
+    }
+    requireAuthenticatedUser();
+  </script>
+</body>
+</html>
